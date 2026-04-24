@@ -1,0 +1,31 @@
+{
+  "pageTitle": "Market App",
+  "loading": "Loading",
+  "loadingProduts": "Loading Products",
+  "noProducts": "No products found",
+  "nav": {
+    "home": "Home",
+    "list": "List"
+  },
+  "productList": "Product List",
+  "product": {
+    "name": "Name",
+    "description": "Description",
+    "id": "Id",
+    "price": "Price",
+    "rating": "Rating",
+    "stock": "Stock",
+    "category": "Category",
+    "title:": "Title"
+  },
+  "filter": {
+    "name": "Name",
+    "namePlaceholder": "Insert Product Name here",
+    "sort": "Sort",
+    "ascedent": "Ascedent",
+    "descedent": "Descedent"
+  },
+  "button": {
+    "addToCart": "Add to Cart"
+  }
+}

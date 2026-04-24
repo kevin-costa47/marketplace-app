@@ -1,0 +1,47 @@
+.productList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: auto;
+
+  align-items: center;
+  justify-items: center;
+  gap: 1rem;
+  max-width: 1024px;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    justify-content: center;
+  }
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 2rem;
+
+  .list-item-container {
+    background: var(--bg-panel);
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+  }
+}
+
+.listPageSize {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  gap: 1rem;
+  max-width: 1024px;
+  width: 100%;
+
+  select {
+    width: 100px;
+  }
+}
