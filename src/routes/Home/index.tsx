@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useProducts } from "../../hooks/useProducts";
 
 import styles from "./index.module.css";
@@ -6,18 +6,27 @@ import ListItem from "../../components/ListItem";
 import ListFilters from "../../components/ListFilters";
 import type { IProductsSearchQuery, IProduct } from "../../interface/types";
 import { t } from "i18next";
+import { useCartStore } from "../../store";
 
 export default function List() {
-  const { products, isSearching } = useProducts();
+  const { products, isSearching, hasError } = useProducts();
   const [activeFilters, setActiveFilters] = useState<IProductsSearchQuery>();
+  const { addItem, clearCart } = useCartStore();
+
+  useEffect(() => {
+    clearCart();
+  }, []);
 
   const updateProductList = useCallback((filter: IProductsSearchQuery) => {
     setActiveFilters(filter);
   }, []);
 
-  const clickedItem = useCallback((product: IProduct) => {
-    console.log("clicked", product);
-  }, []);
+  const clickedItem = useCallback(
+    (product: IProduct) => {
+      addItem(product);
+    },
+    [addItem],
+  );
 
   const displayList = useMemo(() => {
     const { name, sort } = activeFilters || {};
@@ -47,6 +56,14 @@ export default function List() {
 
     return newProducts;
   }, [activeFilters, products]);
+
+  if (hasError) {
+    return (
+      <div className={styles["listContainer"]}>
+        <h1>{t("error")}</h1>
+      </div>
+    );
+  }
 
   return (
     <div className={styles["listContainer"]}>

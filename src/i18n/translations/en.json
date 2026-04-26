@@ -25,7 +25,24 @@
     "ascedent": "Ascedent",
     "descedent": "Descedent"
   },
+
+  "cart": {
+    "empty": "Your cart is empty",
+    "item": {
+      "title": "Title",
+      "quantity": "Quantity",
+      "price": "Price Per Unit",
+      "total": "Total"
+    },
+    "total": {
+      "amount": "Total Amount",
+      "price": "Total Price"
+    }
+  },
+
   "button": {
-    "addToCart": "Add to Cart"
+    "addToCart": "Add",
+    "clearCart": "Clear Cart",
+    "checkout": "Checkout"
   }
 }

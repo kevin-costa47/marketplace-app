@@ -1,10 +1,10 @@
 {
   "pageTitle": "Aplicativo de Mercado",
   "loading": "Carregando",
-  "loadingProducts": "Carregando Produtos",
+  "loadingProduts": "Carregando Produtos",
   "noProducts": "Nenhum produto encontrado",
   "nav": {
-    "home": "Home",
+    "home": "Início",
     "list": "Lista"
   },
   "productList": "Lista de Produtos",
@@ -21,11 +21,32 @@
   "filter": {
     "name": "Nome",
     "namePlaceholder": "Insira o Nome do Produto aqui",
-    "sort": "Ordenar",
-    "ascendent": "Ascendente",
-    "descendent": "Descendente"
+    "sort": "Preço",
+    "ascedent": "Ascendente",
+    "descedent": "Descendente"
+  },
+  "cart": {
+    "title": "Carrinho de Compras",
+    "empty": "O seu carrinho está vazio",
+    "item": {
+      "title": "Título",
+      "quantity": "Quantidade",
+      "price": "Preço por Unidade",
+      "total": "Total"
+    },
+    "total": {
+      "amount": "Total",
+      "price": "Preço Total"
+    }
   },
   "button": {
-    "addToCart": "Adicionar ao Carrinho"
+    "addToCart": "Adicionar",
+    "clearCart": "Limpar Carrinho",
+    "checkout": "Finalizar Pedido"
+  },
+
+  "error": {
+    "title": "Ocorreu um erro",
+    "message": "Ocorreu um erro ao carregar os produtos."
   }
 }

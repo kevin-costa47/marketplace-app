@@ -6,10 +6,9 @@ body {
   background: var(--bg-main);
   background-size: cover;
   background-attachment: fixed;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: #ffffff;
+  font-family: var(--font-family);
+  color: var(--text-main);
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   overflow-x: hidden;
 }

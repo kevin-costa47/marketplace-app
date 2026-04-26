@@ -52,8 +52,8 @@ export default function ListFilters({
             data-tested="filter-sort"
             id="sort">
             <option value="" selected></option>
-            <option value="asc">{t("filter.ascendent")}</option>
-            <option value="desc">{t("filter.descendent")}</option>
+            <option value="asc">{t("filter.ascedent")}</option>
+            <option value="desc">{t("filter.descedent")}</option>
           </select>
         </div>
       </div>

@@ -15,3 +15,7 @@ export interface IProduct {
     count: number;
   };
 }
+
+export interface ICartProduct extends IProduct {
+  quantity: number;
+}

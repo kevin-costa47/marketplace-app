@@ -3,6 +3,8 @@ import "./index.module.css";
 import styles from "./index.module.css";
 import Button from "../Button";
 import { t } from "i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListItem({ product, onClick }: IListItemProps) {
   const { title, image, price } = product;
@@ -17,7 +19,7 @@ export default function ListItem({ product, onClick }: IListItemProps) {
           {title}
         </span>
         <span className={styles["listItemPrice"]} data-testid="product-price">
-          {price}$
+          {price}€
         </span>
       </div>
 
@@ -25,6 +27,7 @@ export default function ListItem({ product, onClick }: IListItemProps) {
         <Button
           data-testid="product-add-to-cart"
           onClick={() => onClick(product)}>
+          <FontAwesomeIcon icon={faCartPlus} cursor={"pointer"} />
           {t("button.addToCart")}
         </Button>
       </div>
