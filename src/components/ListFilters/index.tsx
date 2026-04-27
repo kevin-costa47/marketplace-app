@@ -51,7 +51,9 @@ export default function ListFilters({
             value={sortFIlter}
             data-tested="filter-sort"
             id="sort">
-            <option value="" selected></option>
+            <option value="" selected>
+              {t("filter.noOrder")}
+            </option>
             <option value="asc">{t("filter.ascedent")}</option>
             <option value="desc">{t("filter.descedent")}</option>
           </select>

@@ -8,10 +8,11 @@ import type { IProductsSearchQuery, IProduct } from "../../interface/types";
 import { t } from "i18next";
 import { useCartStore } from "../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import LoadingBar from "../../components/LoadingBar";
 
 export default function List() {
-  const { products, isFirstLoading, isRefreshing, hasError } = useProducts();
+  const { products, isFirstLoading, hasError } = useProducts();
   const [activeFilters, setActiveFilters] = useState<IProductsSearchQuery>();
   const { addItem, clearCart } = useCartStore();
 
@@ -67,46 +68,41 @@ export default function List() {
     );
   }
 
+  if (isFirstLoading) {
+    return (
+      <div className={styles["loadingContainer"]}>
+        <FontAwesomeIcon
+          icon={faSpinner}
+          pulse
+          color="var(--color-primary)"
+          size="6x"
+          spin
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={styles["listContainer"]}>
-      <>
-        {isFirstLoading ? (
-          <div className={styles["loadingContainer"]}>
-            <FontAwesomeIcon
-              icon={faSpinner}
-              pulse
-              color="var(--color-primary)"
-              size="6x"
-              spin
-            />
-          </div>
-        ) : displayList.length > 0 ? (
-          <div className={styles["productListContainer"]}>
-            {isRefreshing && (
-              <div className={styles.refetchContainer}>
-                <FontAwesomeIcon
-                  icon={faCircleNotch}
-                  color="var(--color-primary)"
-                  size="6x"
-                  spin
-                />
-              </div>
-            )}
-            <ListFilters onChange={updateProductList} />
-            <div className={styles["productList"]}>
-              {displayList.map((product: IProduct) => (
-                <ListItem
-                  key={product.id}
-                  product={product}
-                  onClick={clickedItem}
-                />
-              ))}
+      <div className={styles["productListContainer"]}>
+        <LoadingBar />
+        <ListFilters onChange={updateProductList} />
+        <div className={styles["productList"]}>
+          {displayList.length === 0 ? (
+            <div className={styles["noProductsContainer"]}>
+              <h2>{t("noProducts")}</h2>
             </div>
-          </div>
-        ) : (
-          <h2>{t("noProducts")}</h2>
-        )}
-      </>
+          ) : (
+            displayList.map((product: IProduct) => (
+              <ListItem
+                key={product.id}
+                product={product}
+                onClick={clickedItem}
+              />
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 }

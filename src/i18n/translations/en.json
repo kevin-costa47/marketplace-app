@@ -22,6 +22,7 @@
     "name": "Name",
     "namePlaceholder": "Insert Product Name here",
     "sort": "Sort",
+    "noOrder": "No Order",
     "ascedent": "Ascedent",
     "descedent": "Descedent"
   },

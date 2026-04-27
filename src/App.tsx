@@ -7,6 +7,7 @@ import Home from "./routes/Home";
 import Cart from "./routes/Cart";
 import ErrorPage from "./routes/ErrorPage";
 import "./utils/variables.scss";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -17,9 +18,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/error" element={<ErrorPage />} />
-
         <Route path="*" element={<Home />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }

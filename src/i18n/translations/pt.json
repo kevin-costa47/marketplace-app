@@ -22,6 +22,7 @@
     "name": "Nome",
     "namePlaceholder": "Insira o Nome do Produto aqui",
     "sort": "Preço",
+    "noOrder": "Sem Ordenação",
     "ascedent": "Ascendente",
     "descedent": "Descendente"
   },
