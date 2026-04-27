@@ -1,73 +1,125 @@
-# React + TypeScript + Vite
+# MarketPlace APP
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é um projeto de e-commerce desenvolvido em React, focado em demonstrar uma arquitetura de gestão de estado moderna, eficiente e escalável. A aplicação permite a navegação por um catálogo de produtos e a gestão de um carrinho de compras em tempo real.
 
-Currently, two official plugins are available:
+## Arquitetura e Decisões Técnicas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Para a definição da arquitetura, realizei uma análise detalhada dos requisitos funcionais, focando na eficiência do fluxo de dados. A principal decisão estratégica foi a separação de responsabilidades entre Server State (dados da API) e Client State (estado local).
 
-## React Compiler
+Embora o Redux Toolkit seja uma solução robusta, optei por uma abordagem híbrida utilizando Zustand e TanStack Query. Esta escolha resultou numa redução significativa de boilerplate, maior performance e um código muito mais legível.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack Tecnológica & Gestão de Estado
 
-## Expanding the ESLint configuration
+### TanStack Query (Server State)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Os produtos são consumidos da FakeStore API. Por serem dados dinâmicos, o TanStack Query foi implementado para garantir a integridade da informação:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Caching Inteligente: Otimização de performance ao evitar requisições redundantes.
+- Sincronização em Background: Políticas de refetching automáticas para manter preços e inventário atualizados.
+- Controlo Declarativo: Gestão simplificada de estados de loading, error e success, proporcionando um feedback visual fluido ao utilizador.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Zustand (Client State)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+O Carrinho de Compras é um estado estritamente local. O Zustand foi selecionado pela sua simplicidade e performance:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Performance Superior: Evita re-renderizações desnecessárias, atualizando apenas os componentes que consomem partes específicas do estado.
+- Persistência (Middleware): O carrinho é automaticamente sincronizado com o localStorage, mantendo os itens guardados mesmo após o refresh da página.
+- Lógica Desacoplada: Toda a lógica de negócio (adicionar, remover, calcular totais) está isolada da interface, facilitando a manutenção e testes.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Tratamento de Erros
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Para garantir uma aplicação robusta e evitar falhas silenciosas, implementei uma estratégia de tratamento de erros centralizada e proativa:
+
+Monitorização de Requisições
+Utilizando o estado fornecido pelo TanStack Query, a aplicação monitoriza continuamente a integridade das chamadas à FakeStore API. Através da propriedade hasError (exposta pelo hook customizado useProduct), o sistema deteta instantaneamente qualquer falha de conectividade ou resposta inválida do servidor.
+
+## Interface & UX
+
+A interface da aplicação foi projetada com foco na consistência e na redução do esforço cognitivo do utilizador, apresentando as seguintes características:
+
+A aplicação utiliza um Header fixo, garantindo que os controlos de navegação e a identidade do projeto estejam sempre acessíveis. Este elemento permite uma transição fluida entre o Marketplace (listagem) e o Carrinho de Compras sem que o utilizador perca o contexto da sua navegação.
+
+Um dos pilares da experiência do utilizador (UX) neste projeto é a natureza dinâmica do acesso ao Carrinho no Header:
+
+- Monitorização de Estado: O componente observa o estado global (Zustand) de forma contínua.
+- Sincronização Automática: Sempre que um produto é adicionado, removido ou tem a sua quantidade alterada, o Header reflete instantaneamente a quantidade total de itens e o preço acumulado.
+- Otimização de Fluxo: Esta funcionalidade permite que o utilizador acompanhe o progresso das suas compras em tempo real, eliminando a necessidade de navegação redundante para validar o conteúdo do carrinho.
+
+## Listagem de Produtos
+
+A página de listagem de produtos integra o catálogo principal com um sistema de filtros dinâmicos e ordenação.
+
+- Mecanismo de Debouncing: A pesquisa por nome utiliza Debouncing, garantindo que a lógica de filtragem seja disparada apenas após um curto intervalo de inatividade na digitação. Esta técnica evita re-renderizações excessivas e otimiza o processamento da aplicação.
+- Processamento Client-side: Toda a filtragem e ordenação por preço são executadas localmente sobre o dataset já hidratado. Ao eliminar a necessidade de novas requisições HTTP para estas operações, a interface oferece uma resposta mais fluida.
+
+### Layout e Responsividade
+
+A exibição dos produtos é estruturada através de uma Flex Grid, selecionada pela sua versatilidade no controlo de layouts responsivos:
+
+- Restrições Visuais: Foi definido um max-width de 1024px e um limite de 4 produtos por linha em ecrãs de alta resolução, priorizando a hierarquia visual e a estética.
+- Adaptabilidade: O número de colunas é dinâmico, ajustando-se automaticamente às dimensões do ecrã para manter a fluidez da experiência em dispositivos móveis.
+- Componente de Produto: Cada card contém quatro elementos essenciais — imagem, título, preço e um botão de ação. A adição de um item ao carrinho desencadeia um feedback visual imediato no Header, atualizando de forma síncrona tanto o contador de unidades como o valor total acumulado.
+
+### Gestão de Dados e Ciclo de Vida
+
+O fluxo de dados é gerido pelo TanStack Query através do hook customizado useProduct.
+
+- Estados de Carregamento: Durante a fase de hidratação inicial dos dados, a propriedade isLoading é utilizada para renderizar uma interface de loading, informando o utilizador sobre o progresso da operação.
+- Sincronização: Foram configuradas estratégias de refetching para garantir a integridade das informações. Estas regras asseguram que dados sensíveis, como variações de preço e disponibilidade de inventário, permaneçam atualizados durante toda a sessão de navegação.
+
+## Gestão do Carrinho de Compras
+
+A página do Carrinho foi desenvolvida para oferecer um controlo granular sobre os itens selecionados, utilizando uma lógica de renderização condicional para gerir os diferentes estados da interface:
+
+### Estados da Interface
+
+- Empty State: Caso o carrinho não contenha elementos, é apresentada uma mensagem de aviso amigável, informando o utilizador e incentivando o retorno ao marketplace.
+- Carrinho Ativo: Quando existem produtos no estado local, a aplicação gera uma listagem dinâmica onde cada item ocupa uma linha dedicada, independentemente da sua quantidade.
+
+### Interatividade e Controlo de Itens
+
+A listagem é estruturada numa Flex Grid responsiva, onde cada componente de produto expõe funcionalidades críticas:
+
+- Ajuste Dinâmico de Quantidade: O utilizador pode alterar a quantidade de cada produto diretamente. Estas mutações são processadas em tempo real pelo Zustand, atualizando instantaneamente os totais da página e do Header.
+
+- Remoção Automática: Implementação de lógica de segurança onde, caso a quantidade de um produto seja reduzida a zero, o item é automaticamente removido do estado global.
+
+- Dados Detalhados: Cada linha exibe a imagem, título, preço unitário, subtotal calculado e um botão para remoção imediata do item.
+
+### Finalização e Sumário
+
+No rodapé da página, a aplicação agrega a informação final para o utilizador:
+
+- Métricas Globais: Exibição do número total de produtos e do valor total da encomenda.
+
+- Ações Primárias:
+  - Limpar Carrinho: Reseta integralmente o estado local do carrinho através de uma única ação atómica.
+
+  - Finalizar Pedido: Ponto de entrada para o fluxo de checkout da aplicação.
+
+#### Fluxo de Recuperação e Feedback
+
+Sempre que uma falha crítica é identificada, a aplicação aciona um fluxo de tratamento de exceções:
+
+- Redirecionamento Automático: O utilizador é encaminhado para uma Página de Erro dedicada, evitando que a interface fique num estado inconsistente ou "congelado".
+
+- Diagnóstico Contextualizado: Nesta página, são apresentados os detalhes técnicos e a mensagem de erro correspondente. Isto permite que o utilizador compreenda a natureza do problema (ex: erro de rede ou indisponibilidade da API) e receba orientações para retomar a navegação.
+
+# Como Instalar e Executar
+
+```bash
+# Instalar dependências
+git clone https://github.com/kevin-costa47/marketplace-app.git
+
+# Instalar dependências
+npm install
+
+# Iniciar em modo de desenvolvimento
+npm run dev
+
+# Executar testes
+npm test
+
+# Build para produção
+npm run build
 ```

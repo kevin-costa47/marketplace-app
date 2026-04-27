@@ -9,13 +9,13 @@ import { t } from "i18next";
 import { useCartStore } from "../../store";
 
 export default function List() {
-  const { products, isSearching, hasError } = useProducts();
+  const { products, isFirstLoading, hasError } = useProducts();
   const [activeFilters, setActiveFilters] = useState<IProductsSearchQuery>();
   const { addItem, clearCart } = useCartStore();
 
   useEffect(() => {
     clearCart();
-  }, []);
+  }, [clearCart]);
 
   const updateProductList = useCallback((filter: IProductsSearchQuery) => {
     setActiveFilters(filter);
@@ -69,7 +69,7 @@ export default function List() {
     <div className={styles["listContainer"]}>
       <>
         <ListFilters onChange={updateProductList} />
-        {isSearching ? (
+        {isFirstLoading ? (
           <h2> {t("loadingProduts")}...</h2>
         ) : displayList.length > 0 ? (
           <div className={styles["productList"]}>

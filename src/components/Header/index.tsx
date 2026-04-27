@@ -7,10 +7,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useProducts } from "../../hooks/useProducts";
 import { useEffect } from "react";
+import type { IProduct } from "../../interface/types";
 
 export default function Header() {
-  const { hasError } = useProducts();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const totalPrice = useCartStore((state) => state.getTotalPrice());
+  const totalAmount = useCartStore((state) => state.getTotalAmount());
+  const { products, hasError } = useProducts();
+  const { items, updateItemPrice } = useCartStore();
 
   useEffect(() => {
     if (hasError) {
@@ -18,9 +23,16 @@ export default function Header() {
     }
   }, [hasError, navigate]);
 
-  const { t } = useTranslation();
-  const totalPrice = useCartStore((state) => state.getTotalPrice());
-  const totalAmount = useCartStore((state) => state.getTotalAmount());
+  useEffect(() => {
+    if (!products || items.length === 0) return;
+
+    items.forEach((cartItem) => {
+      const freshProduct = products.find((p: IProduct) => p.id === cartItem.id);
+      if (freshProduct && freshProduct.price !== cartItem.price) {
+        updateItemPrice(cartItem.id, freshProduct.price);
+      }
+    });
+  }, [products, items.length, items, updateItemPrice]);
 
   return (
     <div className={styles["headerContainer"]}>
