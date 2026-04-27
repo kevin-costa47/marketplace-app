@@ -7,9 +7,11 @@ import ListFilters from "../../components/ListFilters";
 import type { IProductsSearchQuery, IProduct } from "../../interface/types";
 import { t } from "i18next";
 import { useCartStore } from "../../store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function List() {
-  const { products, isFirstLoading, hasError } = useProducts();
+  const { products, isFirstLoading, isRefreshing, hasError } = useProducts();
   const [activeFilters, setActiveFilters] = useState<IProductsSearchQuery>();
   const { addItem, clearCart } = useCartStore();
 
@@ -68,18 +70,38 @@ export default function List() {
   return (
     <div className={styles["listContainer"]}>
       <>
-        <ListFilters onChange={updateProductList} />
         {isFirstLoading ? (
-          <h2> {t("loadingProduts")}...</h2>
+          <div className={styles["loadingContainer"]}>
+            <FontAwesomeIcon
+              icon={faSpinner}
+              pulse
+              color="var(--color-primary)"
+              size="6x"
+              spin
+            />
+          </div>
         ) : displayList.length > 0 ? (
-          <div className={styles["productList"]}>
-            {displayList.map((product: IProduct) => (
-              <ListItem
-                key={product.id}
-                product={product}
-                onClick={clickedItem}
-              />
-            ))}
+          <div className={styles["productListContainer"]}>
+            {isRefreshing && (
+              <div className={styles.refetchContainer}>
+                <FontAwesomeIcon
+                  icon={faCircleNotch}
+                  color="var(--color-primary)"
+                  size="6x"
+                  spin
+                />
+              </div>
+            )}
+            <ListFilters onChange={updateProductList} />
+            <div className={styles["productList"]}>
+              {displayList.map((product: IProduct) => (
+                <ListItem
+                  key={product.id}
+                  product={product}
+                  onClick={clickedItem}
+                />
+              ))}
+            </div>
           </div>
         ) : (
           <h2>{t("noProducts")}</h2>

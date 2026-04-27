@@ -15,9 +15,9 @@ export const useProducts = () => {
   });
 
   return {
-    products: searchQuery.data ?? [], // Fallback to empty array to prevent map errors
-    isFirstLoading: searchQuery.isLoading, // True only on the first load
-    isRefreshing: searchQuery.isFetching, // True on every background update
+    products: searchQuery.data ?? [],
+    isFirstLoading: searchQuery.isLoading,
+    isRefreshing: searchQuery.isFetching,
     hasError: searchQuery.isError,
     error: searchQuery.error,
     refetch: searchQuery.refetch,
