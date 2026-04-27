@@ -7,6 +7,7 @@ interface CartStore {
   items: ICartProduct[];
   getTotalPrice: () => number;
   getTotalAmount: () => number;
+  invalidCart: () => boolean;
   addItem: (product: IProduct) => void;
   removeItem: (product: IProduct) => void;
   updateQuantity: (product: IProduct, quantity: number) => void;
@@ -28,6 +29,9 @@ export const useCartStore = create<CartStore>()(
         return get().items.reduce((acc, item) => acc + item.quantity, 0);
       },
 
+      invalidCart: (): boolean => {
+        return get().items.filter((item) => item.quantity === 0).length === 0;
+      },
       addItem: (product) =>
         set((state) => {
           const existingItem = state.items.find(

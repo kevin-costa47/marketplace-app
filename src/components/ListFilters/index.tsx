@@ -12,7 +12,6 @@ export default function ListFilters({
 }) {
   const [sortFIlter, setSortFIlter] = useState<string>("");
   const [nameFilter, setNameFilter] = useState<string | null>(null);
-
   const debouncedSearch = useDebounceValue(nameFilter, 500);
 
   useEffect(() => {

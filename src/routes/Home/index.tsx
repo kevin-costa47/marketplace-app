@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useProducts } from "../../hooks/useProducts";
 
 import styles from "./index.module.css";
@@ -14,11 +14,7 @@ import LoadingBar from "../../components/LoadingBar";
 export default function List() {
   const { products, isFirstLoading, hasError } = useProducts();
   const [activeFilters, setActiveFilters] = useState<IProductsSearchQuery>();
-  const { addItem, clearCart } = useCartStore();
-
-  useEffect(() => {
-    clearCart();
-  }, [clearCart]);
+  const { addItem } = useCartStore();
 
   const updateProductList = useCallback((filter: IProductsSearchQuery) => {
     setActiveFilters(filter);
@@ -83,25 +79,23 @@ export default function List() {
   }
 
   return (
-    <div className={styles["listContainer"]}>
-      <div className={styles["productListContainer"]}>
-        <LoadingBar />
-        <ListFilters onChange={updateProductList} />
-        <div className={styles["productList"]}>
-          {displayList.length === 0 ? (
-            <div className={styles["noProductsContainer"]}>
-              <h2>{t("noProducts")}</h2>
-            </div>
-          ) : (
-            displayList.map((product: IProduct) => (
-              <ListItem
-                key={product.id}
-                product={product}
-                onClick={clickedItem}
-              />
-            ))
-          )}
-        </div>
+    <div className={styles["productListContainer"]}>
+      <LoadingBar />
+      <ListFilters onChange={updateProductList} />
+      <div className={styles["productList"]}>
+        {displayList.length === 0 ? (
+          <div className={styles["noProductsContainer"]}>
+            <h2>{t("noProducts")}</h2>
+          </div>
+        ) : (
+          displayList.map((product: IProduct) => (
+            <ListItem
+              key={product.id}
+              product={product}
+              onClick={clickedItem}
+            />
+          ))
+        )}
       </div>
     </div>
   );

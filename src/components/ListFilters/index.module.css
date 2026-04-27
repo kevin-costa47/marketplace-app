@@ -1,3 +1,21 @@
+.listFilterContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1024px;
+
+  .listFilterTitle {
+    margin-bottom: 20px;
+    color: var(--color-primary);
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .formColumn {
   display: flex;
   flex-direction: row;
@@ -47,22 +65,4 @@
   font-weight: bold;
   width: 120px;
   color: var(--color-primary);
-}
-
-.listFilterContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  width: 100%;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  max-width: 1024px;
-}
-
-.listFilterTitle {
-  margin-bottom: 20px;
-  color: var(--color-primary);
-  display: flex;
-  justify-content: center;
 }

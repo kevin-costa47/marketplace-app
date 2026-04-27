@@ -2,9 +2,10 @@
   width: 100%;
   background: var(--color-primary-dark);
   border-bottom: 3px solid var(--color-primary-dark);
-  padding: 20px 0;
   text-align: center;
   backdrop-filter: blur(10px);
-  box-shadow: 0 5px 20px rgba(0, 242, 255, 0.2);
+  height: 47px;
+  align-items: center;
   justify-items: center;
+  align-content: center;
 }

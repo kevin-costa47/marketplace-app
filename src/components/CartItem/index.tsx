@@ -25,11 +25,7 @@ export default function CartItem({ item }: ICartItemProps) {
           type="number"
           min={0}
           max={50}
-          onChange={(event) =>
-            Number(event.target.value) > 0
-              ? updateQuantity(item, Number(event.target.value))
-              : removeItem(item)
-          }
+          onChange={(event) => updateQuantity(item, Number(event.target.value))}
           value={item.quantity}
         />
       </span>

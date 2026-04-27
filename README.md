@@ -64,8 +64,10 @@ A exibição dos produtos é estruturada através de uma Flex Grid, selecionada 
 
 O fluxo de dados é gerido pelo TanStack Query através do hook customizado useProduct.
 
-- Estados de Carregamento: Durante a fase de hidratação inicial dos dados, a propriedade isLoading é utilizada para renderizar uma interface de loading, informando o utilizador sobre o progresso da operação.
-- Sincronização: Foram configuradas estratégias de refetching para garantir a integridade das informações. Estas regras asseguram que dados sensíveis, como variações de preço e disponibilidade de inventário, permaneçam atualizados durante toda a sessão de navegação.
+- Estados de Carregamento: Durante a fase de hidratação inicial, a propriedade isLoading é utilizada para renderizar um Spinner de carregamento. Este indicador visual é configurado para aparecer exclusivamente no primeiro carregamento da aplicação, proporcionando um feedback sobre o progresso da operação sem interromper a navegação em atualizações subsequente.
+- Sincronização: Para assegurar que dados sensíveis, como preços e inventário, permanecem atualizados, foram implementadas políticas de cache rigorosas:
+  - Stale Time & Refetch Interval (30s): Configurados em 30.000ms, garantindo que os dados sejam revalidados periodicamente em background.
+  - Feedback de Sincronização: Sempre que um refetch automático ocorre em segundo plano, o utilizador é informado através de uma Loading Bar discreta posicionada abaixo do Header.
 
 ## Gestão do Carrinho de Compras
 
@@ -75,6 +77,9 @@ A página do Carrinho foi desenvolvida para oferecer um controlo granular sobre 
 
 - Empty State: Caso o carrinho não contenha elementos, é apresentada uma mensagem de aviso amigável, informando o utilizador e incentivando o retorno ao marketplace.
 - Carrinho Ativo: Quando existem produtos no estado local, a aplicação gera uma listagem dinâmica onde cada item ocupa uma linha dedicada, independentemente da sua quantidade.
+- Validação de Integridade (Estado Inválido): Para prevenir a finalização de pedidos inconsistentes, a store do Zustand inclui um seletor de validação.
+  - Lógica de Verificação: O seletor filtra os itens do carrinho em busca de qualquer produto com quantidade igual a zero.
+  - Bloqueio de Checkout: Caso seja detetado um estado inválido (ex: um produto que foi reduzido a zero mas ainda consta na lista), o botão de Checkout é automaticamente desativado. Esta regra de negócio garante que apenas transações com quantidades válidas possam avançar para a finalização.
 
 ### Interatividade e Controlo de Itens
 

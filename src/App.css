@@ -12,3 +12,17 @@ body {
   flex-direction: column;
   overflow-x: hidden;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+#root {
+  height: 100vh;
+}
+
+.router-container {
+  height: calc(100vh - 150px);
+  overflow: auto;
+  width: 100%;
+}

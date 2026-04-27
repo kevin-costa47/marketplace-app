@@ -14,12 +14,15 @@ function App() {
     <Router>
       <Header />
       <Suspense fallback={<div>Loading...</div>} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/error" element={<ErrorPage />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
+      <div className="router-container">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/error" element={<ErrorPage />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </div>
+
       <Footer />
     </Router>
   );

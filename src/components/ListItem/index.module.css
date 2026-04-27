@@ -15,44 +15,43 @@
     cursor: pointer;
     background: var(--border-color);
   }
-}
 
-.listItemDetails {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-.listItemImage {
-  width: 100%;
-  height: auto;
-  text-align: center;
-  object-fit: contain;
-
-  img {
-    width: 150px;
-    height: 150px;
+  .listItemImage {
+    width: 100%;
+    height: auto;
+    text-align: center;
     object-fit: contain;
+
+    img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+    }
   }
-}
 
-.listItemName {
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--text-main);
-  text-align: center;
+  .listItemDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-}
+  .listItemName {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-main);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
 
-.listItemPrice {
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-align: center;
-  color: var(--color-primary);
+  .listItemPrice {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--color-primary);
+  }
 }

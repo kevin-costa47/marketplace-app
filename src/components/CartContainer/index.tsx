@@ -8,7 +8,8 @@ import { faCartArrowDown, faX } from "@fortawesome/free-solid-svg-icons";
 import CartItem from "../CartItem";
 
 export default function CartContainer() {
-  const { items, getTotalPrice, getTotalAmount, clearCart } = useCartStore();
+  const { items, invalidCart, getTotalPrice, getTotalAmount, clearCart } =
+    useCartStore();
 
   return (
     <div className={styles["cartContainer"]}>
@@ -35,7 +36,7 @@ export default function CartContainer() {
           />
           {t("button.clearCart")}
         </Button>
-        <Button>
+        <Button disabled={!invalidCart()}>
           <FontAwesomeIcon icon={faCartArrowDown} cursor={"pointer"} />
           {t("button.checkout")}
         </Button>

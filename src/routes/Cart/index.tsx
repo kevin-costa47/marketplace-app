@@ -24,7 +24,7 @@ export default function List() {
   }, [products, items.length, items, updateItemPrice]);
 
   return (
-    <div className={styles["pageContainer"]}>
+    <div className={styles["pageCartContainer"]}>
       {items.length === 0 ? (
         <h2 className={styles["cartContainerTitle"]}>{t("cart.empty")}</h2>
       ) : (
