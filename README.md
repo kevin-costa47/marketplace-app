@@ -137,6 +137,16 @@ A API utilizada não fornece metadados relativos ao stock em tempo real de cada 
 
 O sistema de sincronização atual é reativo a preços e presença de produtos. Uma evolução lógica seria a implementação de um sistema de Reconciliação de Inventário, onde o carrinho seria capaz de ajustar automaticamente as quantidades selecionadas pelo utilizador com base no stock real retornado pelo servidor durante o polling.
 
+### Estratégia de Testes
+
+Reconheço a necessidade de expandir a cobertura de testes para alcançar uma pirâmide de testes saudável:
+
+- Testes de Integração: Necessários para validar a interação entre os custom hooks (como o useProduct) e os componentes, garantindo que o fluxo de dados entre o TanStack Query e a UI não sofra regressões.
+
+- End-to-End (E2E): Implementação futura de fluxos completos (ex: utilizando Cypress ou Playwright) para simular a jornada do utilizador, desde a pesquisa do produto até à finalização do pedido no carrinho.
+
+- Testes de Regressão Visual: Introdução de ferramentas como o Chromatic ou Storybook Runner para garantir a integridade da interface em diferentes resoluções e browsers, prevenindo que alterações no CSS quebrem componentes existentes.
+
 # Como Instalar e Executar
 
 ```bash
