@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useProducts } from "../../hooks/useProducts";
+import { useProducts } from "@/hooks/useProducts";
 import styles from "./index.module.css";
 
 export default function LoadingBar() {

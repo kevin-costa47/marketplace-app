@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { useProducts } from "../../hooks/useProducts";
+import { useProducts } from "@/hooks/useProducts";
 import styles from "./index.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";

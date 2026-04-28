@@ -2,12 +2,13 @@ import "./index.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { useTranslation } from "react-i18next";
-import { useCartStore } from "../../store";
+import { useCartStore } from "@/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { useProducts } from "../../hooks/useProducts";
-import { useEffect } from "react";
-import type { IProduct } from "../../interface/types";
+import { useProducts } from "@/hooks/useProducts";
+import { useEffect, useMemo } from "react";
+import type { IProduct } from "@/interface/types";
+import { getFormattedPrice } from "@/utils/utils";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ export default function Header() {
   const totalAmount = useCartStore((state) => state.getTotalAmount());
   const { products, hasError } = useProducts();
   const { items, updateItemPrice } = useCartStore();
+
+  const cartItemIds = useMemo(() => items.map((item) => item.id), [items]);
 
   useEffect(() => {
     if (hasError) {
@@ -32,7 +35,7 @@ export default function Header() {
         updateItemPrice(cartItem.id, freshProduct.price);
       }
     });
-  }, [products, items.length, items, updateItemPrice]);
+  }, [products, cartItemIds, updateItemPrice]);
 
   return (
     <div className={styles["headerContainer"]}>
@@ -45,7 +48,7 @@ export default function Header() {
         <div className={styles["cartContainer"]}>
           {totalPrice > 0 && (
             <span className={styles["cartPrice"]} data-testid="cart-price">
-              ({totalPrice}€)
+              ({getFormattedPrice(totalPrice)})
             </span>
           )}
           <div className={styles["cartIconContainer"]}>

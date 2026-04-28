@@ -9,7 +9,7 @@ describe("Testing List Filters", () => {
     expect(filterHeader).toBeInTheDocument();
   });
 
-  it("check if Button is being rendered", () => {
+  it("check if Button is being rendered with onClick", () => {
     const onClick = vi.fn();
     render(<Button children="Button" onClick={onClick} />);
 

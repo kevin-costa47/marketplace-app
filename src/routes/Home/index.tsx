@@ -1,15 +1,15 @@
 import { useCallback, useMemo, useState } from "react";
-import { useProducts } from "../../hooks/useProducts";
+import { useProducts } from "@/hooks/useProducts";
 
 import styles from "./index.module.css";
-import ListItem from "../../components/ListItem";
-import ListFilters from "../../components/ListFilters";
-import type { IProductsSearchQuery, IProduct } from "../../interface/types";
+import ListItem from "@/components/ListItem";
+import ListFilters from "@/components/ListFilters";
+import type { IProductsSearchQuery, IProduct } from "@/interface/types";
 import { t } from "i18next";
-import { useCartStore } from "../../store";
+import { useCartStore } from "@/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import LoadingBar from "../../components/LoadingBar";
+import LoadingBar from "@/components/LoadingBar";
 
 export default function List() {
   const { products, isFirstLoading, hasError } = useProducts();
@@ -28,29 +28,23 @@ export default function List() {
   );
 
   const displayList = useMemo(() => {
-    const { name, sort } = activeFilters || {};
-
     if (!products) {
       return [];
     }
     let newProducts = [...products];
 
+    const { name, sort } = activeFilters || {};
+
     if (sort) {
-      newProducts = newProducts?.sort((a: IProduct, b: IProduct) => {
-        if (sort === "asc") {
-          return a.price - b.price;
-        } else {
-          return b.price - a.price;
-        }
+      newProducts.sort((a: IProduct, b: IProduct) => {
+        return sort === "asc" ? a.price - b.price : b.price - a.price;
       });
     }
 
     if (name) {
-      newProducts = newProducts?.filter((product: IProduct) => {
-        return name
-          ? product.title.toLowerCase().includes(name.toLowerCase())
-          : true;
-      });
+      newProducts = newProducts.filter((product: IProduct) =>
+        product.title.toLowerCase().includes(name.toLowerCase()),
+      );
     }
 
     return newProducts;

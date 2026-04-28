@@ -1,27 +1,29 @@
 import styles from "./index.module.css";
 
-import { useCartStore } from "../../store";
+import { useCartStore } from "@/store";
 import { t } from "i18next";
-import CartContainer from "../../components/CartContainer";
-import { useProducts } from "../../hooks/useProducts";
-import { useEffect } from "react";
-import type { IProduct } from "../../interface/types";
+import CartContainer from "@/components/CartContainer";
+import { useProducts } from "@/hooks/useProducts";
 
-export default function List() {
-  const { products } = useProducts();
-  const { items, updateItemPrice } = useCartStore();
+export default function Cart() {
+  const { isFirstLoading, hasError } = useProducts();
+  const { items } = useCartStore();
 
-  useEffect(() => {
-    if (!products || items.length === 0) return;
+  if (hasError) {
+    return (
+      <div className={styles["pageCartContainer"]}>
+        <h2>{t("error")}</h2>
+      </div>
+    );
+  }
 
-    items.forEach((cartItem) => {
-      const freshProduct = products.find((p: IProduct) => p.id === cartItem.id);
-
-      if (freshProduct && freshProduct.price !== cartItem.price) {
-        updateItemPrice(cartItem.id, freshProduct.price);
-      }
-    });
-  }, [products, items.length, items, updateItemPrice]);
+  if (isFirstLoading) {
+    return (
+      <div className={styles["pageCartContainer"]}>
+        <h2>{t("loading")}</h2>
+      </div>
+    );
+  }
 
   return (
     <div className={styles["pageCartContainer"]}>

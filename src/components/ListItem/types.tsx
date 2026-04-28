@@ -1,4 +1,4 @@
-import type { IProduct } from "../../interface/types";
+import type { IProduct } from "@/interface/types";
 
 export interface IListItemProps {
   product: IProduct;

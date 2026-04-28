@@ -49,3 +49,16 @@
     }
   }
 }
+
+.cartUpdateContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: stretch;
+  color: var(--color-primary);
+  border: 1px solid var(--color-secondary);
+  border-radius: 6px;
+  padding: 0 1rem;
+}

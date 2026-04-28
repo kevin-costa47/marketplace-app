@@ -1,10 +1,22 @@
 // A simple, persistent cart store
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import type { ICartProduct, IProduct } from "../interface/types";
+import { persist, createJSONStorage } from "zustand/middleware";
+import type { ICartProduct, IProduct } from "@/interface/types";
+
+const clampQuantity = (quantity: number) =>
+  Math.max(1, Math.min(50, Math.floor(quantity)));
+
+const STORAGE_KEY = "shopping-cart";
+
+const clearPersistentCart = () => {
+  if (typeof window !== "undefined" && window.localStorage) {
+    window.localStorage.removeItem(STORAGE_KEY);
+  }
+};
 
 interface CartStore {
   items: ICartProduct[];
+  updatedCart: boolean;
   getTotalPrice: () => number;
   getTotalAmount: () => number;
   invalidCart: () => boolean;
@@ -13,11 +25,15 @@ interface CartStore {
   updateQuantity: (product: IProduct, quantity: number) => void;
   updateItemPrice: (productId: number, newPrice: number) => void;
   clearCart: () => void;
+  completeOrder: () => void;
+  removeUpdatedCartNotification: () => void;
 }
+
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
+      updatedCart: false,
       getTotalPrice: (): number => {
         const totalPrice = get().items.reduce(
           (acc, item) => acc + item.quantity * item.price,
@@ -25,13 +41,12 @@ export const useCartStore = create<CartStore>()(
         );
         return parseFloat(totalPrice.toFixed(2));
       },
-      getTotalAmount: (): number => {
-        return get().items.reduce((acc, item) => acc + item.quantity, 0);
-      },
+      getTotalAmount: (): number =>
+        get().items.reduce((acc, item) => acc + item.quantity, 0),
 
-      invalidCart: (): boolean => {
-        return get().items.filter((item) => item.quantity === 0).length === 0;
-      },
+      invalidCart: (): boolean =>
+        get().items.every((item) => item.quantity > 0),
+
       addItem: (product) =>
         set((state) => {
           const existingItem = state.items.find(
@@ -44,7 +59,7 @@ export const useCartStore = create<CartStore>()(
                 item.id === product.id
                   ? {
                       ...item,
-                      quantity: item.quantity + 1,
+                      quantity: clampQuantity(item.quantity + 1),
                     }
                   : item,
               ),
@@ -64,18 +79,35 @@ export const useCartStore = create<CartStore>()(
       updateQuantity: (product, quantity) =>
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === product.id ? { ...item, quantity } : item,
+            item.id === product.id
+              ? { ...item, quantity: clampQuantity(quantity) }
+              : item,
           ),
         })),
-      updateItemPrice: (productId: number, newPrice: number) =>
+
+      updateItemPrice: (productId, newPrice) =>
         set((state) => ({
           items: state.items.map((item) =>
             item.id === productId ? { ...item, price: newPrice } : item,
           ),
+          updatedCart: true,
         })),
 
-      clearCart: () => set({ items: [] }),
+      clearCart: () => {
+        clearPersistentCart();
+        set({ items: [], updatedCart: false });
+      },
+
+      completeOrder: () => {
+        clearPersistentCart();
+        set({ items: [], updatedCart: false });
+      },
+
+      removeUpdatedCartNotification: () => set({ updatedCart: false }),
     }),
-    { name: "shopping-cart" },
+    {
+      name: STORAGE_KEY,
+      storage: createJSONStorage(() => localStorage),
+    },
   ),
 );

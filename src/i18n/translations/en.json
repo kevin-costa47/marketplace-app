@@ -1,49 +1,48 @@
 {
-  "pageTitle": "Market App",
+  "pageTitle": "Mercado App",
   "loading": "Loading",
   "loadingProduts": "Loading Products",
   "noProducts": "No products found",
-  "nav": {
-    "home": "Home",
-    "list": "List"
-  },
+  "nav": { "home": "Home", "list": "List" },
   "productList": "Product List",
   "product": {
     "name": "Name",
     "description": "Description",
-    "id": "Id",
+    "id": "ID",
     "price": "Price",
     "rating": "Rating",
     "stock": "Stock",
     "category": "Category",
-    "title:": "Title"
+    "title": "Title"
   },
   "filter": {
     "name": "Name",
     "namePlaceholder": "Insert Product Name here",
-    "sort": "Sort",
-    "noOrder": "No Order",
-    "ascedent": "Ascedent",
-    "descedent": "Descedent"
+    "pageSize": "Page Size",
+    "sort": "Price",
+    "noOrder": "No Sorting",
+    "ascedent": "Ascending",
+    "descedent": "Descending"
   },
-
   "cart": {
-    "empty": "Your cart is empty",
+    "title": "Shopping Cart",
+    "updated": "The price of the products in your shopping cart has been updated",
+    "empty": "Your shopping cart is empty",
     "item": {
       "title": "Title",
       "quantity": "Quantity",
-      "price": "Price Per Unit",
+      "price": "Unit Price",
       "total": "Total"
     },
-    "total": {
-      "amount": "Total Amount",
-      "price": "Total Price"
-    }
+    "total": { "amount": "Total", "price": "Total Price" }
   },
-
   "button": {
     "addToCart": "Add",
     "clearCart": "Clear Cart",
     "checkout": "Checkout"
+  },
+  "error": {
+    "title": "Error Occurred",
+    "message": "An error occurred while loading the products."
   }
 }

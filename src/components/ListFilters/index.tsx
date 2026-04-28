@@ -22,7 +22,6 @@ export default function ListFilters({
   function onChangeSort(event: React.ChangeEvent<HTMLSelectElement>) {
     const sort = event.target.value as string;
     setSortFIlter(sort);
-
     onChange({ name: nameFilter || "", sort: sort });
   }
 

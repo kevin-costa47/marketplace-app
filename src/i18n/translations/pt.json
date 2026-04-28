@@ -21,6 +21,7 @@
   "filter": {
     "name": "Nome",
     "namePlaceholder": "Insira o Nome do Produto aqui",
+    "pageSize": "Tamanho da Pagina",
     "sort": "Preço",
     "noOrder": "Sem Ordenação",
     "ascedent": "Ascendente",
@@ -28,6 +29,7 @@
   },
   "cart": {
     "title": "Carrinho de Compras",
+    "updated": "O Preço dos produtos no seu carrinho foi atualizado",
     "empty": "O seu carrinho está vazio",
     "item": {
       "title": "Título",
