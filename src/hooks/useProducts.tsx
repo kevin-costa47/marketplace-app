@@ -18,7 +18,7 @@ export const useProducts = (options: UseProductsOptions = {}) => {
     placeholderData: (previousData) => previousData,
     refetchInterval: 30000,
     refetchOnWindowFocus: true,
-    staleTime: 1000 * 30,
+    staleTime: 30000,
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });

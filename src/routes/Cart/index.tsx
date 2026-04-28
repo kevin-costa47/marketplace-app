@@ -6,16 +6,8 @@ import CartContainer from "@/components/CartContainer";
 import { useProducts } from "@/hooks/useProducts";
 
 export default function Cart() {
-  const { isFirstLoading, hasError } = useProducts();
+  const { isFirstLoading } = useProducts();
   const { items } = useCartStore();
-
-  if (hasError) {
-    return (
-      <div className={styles["pageCartContainer"]}>
-        <h2>{t("error")}</h2>
-      </div>
-    );
-  }
 
   if (isFirstLoading) {
     return (

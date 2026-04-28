@@ -12,7 +12,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import LoadingBar from "@/components/LoadingBar";
 
 export default function List() {
-  const { products, isFirstLoading, hasError } = useProducts();
+  const { products, isFirstLoading } = useProducts();
   const [activeFilters, setActiveFilters] = useState<IProductsSearchQuery>();
   const { addItem } = useCartStore();
 
@@ -49,14 +49,6 @@ export default function List() {
 
     return newProducts;
   }, [activeFilters, products]);
-
-  if (hasError) {
-    return (
-      <div className={styles["listContainer"]}>
-        <h1>{t("error")}</h1>
-      </div>
-    );
-  }
 
   if (isFirstLoading) {
     return (

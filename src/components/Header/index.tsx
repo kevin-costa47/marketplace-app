@@ -36,11 +36,11 @@ export default function Header() {
         if (freshProduct.price !== cartItem.price) {
           updateItemPrice(cartItem.id, freshProduct.price);
         }
-      } else {
+      } else if (cartItem.quantity !== 0) {
         updateQuantity(cartItem, 0);
       }
     });
-  }, [products, cartItemIds, updateItemPrice, updateQuantity]);
+  }, [products, cartItemIds, updateItemPrice, updateQuantity, items]);
 
   return (
     <div className={styles["headerContainer"]}>
