@@ -36,7 +36,7 @@ const CartItem = React.memo(({ item }: ICartItemProps) => {
         <input
           id={`quantity-${item.id}`}
           type="number"
-          min={1}
+          min={0}
           max={50}
           step={1}
           onChange={(event) => updateQuantity(item, Number(event.target.value))}

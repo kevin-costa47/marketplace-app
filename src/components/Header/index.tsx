@@ -16,7 +16,7 @@ export default function Header() {
   const totalPrice = useCartStore((state) => state.getTotalPrice());
   const totalAmount = useCartStore((state) => state.getTotalAmount());
   const { products, hasError } = useProducts();
-  const { items, updateItemPrice } = useCartStore();
+  const { items, updateItemPrice, updateQuantity } = useCartStore();
 
   const cartItemIds = useMemo(() => items.map((item) => item.id), [items]);
 
@@ -31,11 +31,16 @@ export default function Header() {
 
     items.forEach((cartItem) => {
       const freshProduct = products.find((p: IProduct) => p.id === cartItem.id);
-      if (freshProduct && freshProduct.price !== cartItem.price) {
-        updateItemPrice(cartItem.id, freshProduct.price);
+
+      if (freshProduct) {
+        if (freshProduct.price !== cartItem.price) {
+          updateItemPrice(cartItem.id, freshProduct.price);
+        }
+      } else {
+        updateQuantity(cartItem, 0);
       }
     });
-  }, [products, cartItemIds, updateItemPrice]);
+  }, [products, cartItemIds, updateItemPrice, updateQuantity]);
 
   return (
     <div className={styles["headerContainer"]}>

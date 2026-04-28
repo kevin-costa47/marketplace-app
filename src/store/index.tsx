@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import type { ICartProduct, IProduct } from "@/interface/types";
 
 const clampQuantity = (quantity: number) =>
-  Math.max(1, Math.min(50, Math.floor(quantity)));
+  Math.max(0, Math.min(50, Math.floor(quantity)));
 
 const STORAGE_KEY = "shopping-cart";
 

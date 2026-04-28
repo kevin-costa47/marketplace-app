@@ -15,16 +15,23 @@ Embora o Redux Toolkit seja uma solução robusta, optei por uma abordagem híbr
 Os produtos são consumidos da FakeStore API. Por serem dados dinâmicos, o TanStack Query foi implementado para garantir a integridade da informação:
 
 - Caching Inteligente: Otimização de performance ao evitar requisições redundantes.
-- Sincronização em Background: Políticas de refetching automáticas para manter preços e inventário atualizados.
+- Sincronização Reativa (Background Sync):
+  - Políticas de Refetching: Configuração de atualizações automáticas em segundo plano para garantir que preços e inventário permaneçam sincronizados com o servidor.
+  - Consistência do Carrinho: Caso ocorra uma alteração de valores na API durante a sessão, o sistema sincroniza automaticamente o estado local.
+  - Notificações de Atualização: Implementei um mecanismo de alerta que notifica o utilizador sempre que regressa à página do Carrinho e deteta uma variação nos dados originais. Esta transparência assegura que o utilizador esteja ciente de qualquer alteração de preço antes de proceder ao checkout.
 - Controlo Declarativo: Gestão simplificada de estados de loading, error e success, proporcionando um feedback visual fluido ao utilizador.
 
 ### Zustand (Client State)
 
 O Carrinho de Compras é um estado estritamente local. O Zustand foi selecionado pela sua simplicidade e performance:
 
-- Performance Superior: Evita re-renderizações desnecessárias, atualizando apenas os componentes que consomem partes específicas do estado.
-- Persistência (Middleware): O carrinho é automaticamente sincronizado com o localStorage, mantendo os itens guardados mesmo após o refresh da página.
-- Lógica Desacoplada: Toda a lógica de negócio (adicionar, remover, calcular totais) está isolada da interface, facilitando a manutenção e testes.
+- Performance Otimizada: Através de subscrições seletivas, o Zustand evita re-renderizações desnecessárias em toda a árvore de componentes. Apenas os elementos que consomem propriedades específicas do estado são atualizados, garantindo uma interface extremamente fluida.
+- Persistência de Sessão (Middleware): Utilização do middleware de persistência para sincronização automática com a Web Storage API (localStorage).
+  - Continuidade da Experiência: Os itens permanecem guardados mesmo após o refresh da página ou o encerramento do browser.
+
+  - Ciclo de Vida do Cache: O localStorage é gerido de forma inteligente, sendo limpo apenas aquando da finalização da compra ou por ação direta do utilizador (limpeza do carrinho), evitando a acumulação de dados obsoletos.
+
+- Lógica de Negócio Desacoplada: Todas as operações críticas — adicionar, remover, incrementar quantidades e cálculos de totais — estão isoladas em actions dentro da store. Este desacoplamento da interface facilita a manutenção do código e a implementação de testes unitários.
 
 ## Tratamento de Erros
 
@@ -109,6 +116,26 @@ Sempre que uma falha crítica é identificada, a aplicação aciona um fluxo de 
 - Redirecionamento Automático: O utilizador é encaminhado para uma Página de Erro dedicada, evitando que a interface fique num estado inconsistente ou "congelado".
 
 - Diagnóstico Contextualizado: Nesta página, são apresentados os detalhes técnicos e a mensagem de erro correspondente. Isto permite que o utilizador compreenda a natureza do problema (ex: erro de rede ou indisponibilidade da API) e receba orientações para retomar a navegação.
+
+## Considerações Futuras e Pontos de Melhoria
+
+Apesar da robustez da arquitetura atual, foram identificadas áreas passíveis de otimização e expansão, tendo em conta as limitações da infraestrutura de dados (API):
+
+### Paginação e Virtualização
+
+Devido ao facto de a FakeStore API fornecer um limite máximo de 20 produtos, optou-se por não implementar paginação ou um seletor de densidade de itens (elementos por página). Num cenário de produção com um dataset superior, seria essencial a introdução de Paginação ou de um Infinite Scroll.
+
+### Gestão de Inventário (Stock) e Limites de Compra
+
+A API utilizada não fornece metadados relativos ao stock em tempo real de cada produto. Perante esta limitação:
+
+- Implementação Atual: Estabeleci um limite arbitrário de 50 unidades por produto para prevenir abusos na interface e garantir a estabilidade do estado.
+
+- Melhoria Futura: A introdução de uma propriedade stock no payload da API permitiria uma validação de inventário real. Atualmente, o processo de Resync (sincronização em background) foca-se na integridade de preços e na disponibilidade do artigo, mas deveria idealmente validar também a disponibilidade de quantidades remanescentes antes do checkout.
+
+### Evolução do Mecanismo de Sincronização
+
+O sistema de sincronização atual é reativo a preços e presença de produtos. Uma evolução lógica seria a implementação de um sistema de Reconciliação de Inventário, onde o carrinho seria capaz de ajustar automaticamente as quantidades selecionadas pelo utilizador com base no stock real retornado pelo servidor durante o polling.
 
 # Como Instalar e Executar
 
